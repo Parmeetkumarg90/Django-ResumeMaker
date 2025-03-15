@@ -1,0 +1,77 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>LogIn Page</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="{% static 'main.css' %}">
+    </head>
+    <body>
+
+        <nav class = "navbar bg-white">
+            <div class="container">
+                <div class = "navbar-content">
+                    <div class = "brand-and-toggler">
+                        <a href = "{% url 'index' %}" class = "navbar-brand">
+                            <img src = "{% static 'images/curriculum-vitae.png' %}" alt = "" class = "navbar-brand-icon">
+                            <span class = "navbar-brand-text">build <span>resume.</span>
+                        </a>
+                        <button type = "button" class = "navbar-toggler-btn">
+                            <div class = "bars">
+                                <div class = "bar"></div>
+                                <div class = "bar"></div>
+                                <div class = "bar"></div>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <div class = "header bg-bright" id = "header">
+            <form method='POST' style="width:80%; display:flex; flex-direction:column;">
+                {% csrf_token %}
+                <div class="form-elem" style="display: flex; justify-content: center;">
+                    <input class="form-control" name="html_username" style="width:100%; padding: 15px 0 15px 0;">
+                    <label class = "navbar-brand-text form-label-focus" style="position:absolute;">Enter your Username</label>
+                </div>
+                <div class="form-elem" style="display: flex; justify-content: center;">
+                    <input class="form-control" name="html_password" style="width:100%; padding: 15px 0 15px 0;">
+                    <label class = "navbar-brand-text form-label-focus" style="position:absolute;">Enter your Password</label>
+                </div>                
+                <div class="navbar-brand-text" align="center" style="color: #ff0000;">{{output}}</div>
+                <div class="form-elem"  style="display: flex; flex-direction: column; flex-wrap: wrap; align-content:space-evenly; justify-content: center;">
+                    <input type="submit" class="form-control navbar-brand-text form-button" value="LogIn">
+                    <input type="reset" class="form-control navbar-brand-text form-button" value="Reset">
+                </div>                
+                <a href="{% url 'signup' %}" align="center" style="color: #3388ff;">Create New Account ?</a>
+            </form>
+        </div>
+
+        <footer class = "footer bg-dark">
+            <div class="container">
+                <div class = "footer-content text-center">
+                    <p class="fs-15">&copy;Copyright 2025. All Rights Reserved - <span>build.resume </span><span>| Parmeet Kumar</span></p>
+                </div>
+            </div>
+        </footer>
+        <script>
+            document.querySelectorAll('input').forEach((element) => {
+                const label = element.nextElementSibling;
+            
+                const class_adder = () => {
+                    if (element.value == '') {
+                        label.setAttribute('class','navbar-brand-text form-label-focus');
+                    }
+                    else {
+                        label.setAttribute('class', 'navbar-brand-text form-label-focus label-active');
+                    }
+                }
+                element.addEventListener('input', class_adder);
+            });
+        </script>
+    </body>
+</html>
