@@ -67,8 +67,8 @@
                             <div class="cols-3">
                                 <div class="form-elem">
                                     <label for="" class="form-label">Your Image</label>
-                                    <input name="image" value="{{output.intro_image}}" type="file" class="form-control image" id="" accept="image/*"
-                                        onchange="previewImage()">
+                                    {% comment %} <input name="image" value="data:image/png;base64,{{ output.intro_image }}" type="file" class="form-control image" id="" accept="image/*" onchange="previewImage()"> {% endcomment %}
+                                    <input name="image" value="{{output.intro_image}}" type="file" class="form-control image" id="" accept="image/*" onchange="previewImage()">
                                 </div>
                                 <div class="form-elem">
                                     <label for="" class="form-label">Designation</label>
@@ -525,7 +525,7 @@
                 <div class="preview-cnt-l bg-green text-white">
                     <div class="preview-blk">
                         <div class="preview-image">
-                            <img src="" alt="" id="image_dsp">
+                            <img src="data:image/png;base64,{{ output.intro_image }}" alt="" id="image_dsp">
                         </div>
                         <div class="preview-item preview-item-name">
                             <span class="preview-item-val fw-6" id="fullname_dsp"></span>
@@ -607,9 +607,3 @@
 <script src="{% static 'app.js' %}"></script>
 
 </html>
-    
-    
-    
-    
-    
-            
