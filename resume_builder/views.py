@@ -52,7 +52,7 @@ def signup(request):
 def resume(request):        
     if request.user.is_authenticated:
         if request.method == 'POST':
-            obj = user_data.objects.filter(username=str(request.user)+str(request.session.get('pass',''))).first()
+            obj = user_data.objects.filter(username=str(request.user)+str(request.session.get('pass',''))).exists()
             if not obj:
                 data = user_data(
                     username = str(request.user)+str(request.session.get('pass','')),
@@ -92,6 +92,7 @@ def resume(request):
                 )
                 data.save()
             else:
+                obj = user_data.objects.filter(username=str(request.user)+str(request.session.get('pass',''))).first()
                 # If a record exists, update it
                 if request.POST.get('firstname'):
                     obj.intro_firstname = request.POST.get('firstname', '')
@@ -99,7 +100,7 @@ def resume(request):
                     obj.intro_middlename = request.POST.get('middlename', '')
                 if request.POST.get('lastname'):
                     obj.intro_lastname = request.POST.get('lastname', '')
-                if request.POST.get('image'):
+                if request.FILES.get('image'):
                     # obj.intro_image = request.FILES.get('image')
                     obj.intro_image = base64.b64encode(request.FILES.get('image').read()).decode('utf-8')
                 if request.POST.get('designation'):
@@ -155,8 +156,9 @@ def resume(request):
                     obj.skills = request.POST.getlist('skill', '')
                 obj.save()
             # return render(request,'resume.html')
-        obj = user_data.objects.filter(username=str(request.user)+str(request.session.get('pass',''))).first()
+        obj = user_data.objects.filter(username=str(request.user)+str(request.session.get('pass',''))).exists()
         if obj:
+            obj = user_data.objects.filter(username=str(request.user)+str(request.session.get('pass',''))).first()
             obj.achi_title = eval(obj.achi_title)
             obj.achi_description = eval(obj.achi_description)
 
