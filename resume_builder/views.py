@@ -5,6 +5,7 @@ from django.contrib.auth import login,logout,authenticate
 from userdata.models import user_data
 from datetime import date
 import ast  # used for making models returning string into list by removing literals
+import base64
 
 def homepage(request):
     return render(request,'index.html')
@@ -59,7 +60,7 @@ def resume(request):
                     intro_firstname = request.POST.get('firstname',''),
                     intro_middlename = request.POST.get('middlename',''),
                     intro_lastname = request.POST.get('lastname',''),
-                    intro_image = request.FILES.get('image'),
+                    intro_image = base64.b64encode(request.FILES.get('image').read()).decode('utf-8'), # converting images into Base64-encoded string, which is text, not binary
                     intro_designation = request.POST.get('designation',''),
                     intro_address = request.POST.get('address',''),
                     intro_email = request.POST.get('email',''),
@@ -99,7 +100,8 @@ def resume(request):
                 if request.POST.get('lastname'):
                     obj.intro_lastname = request.POST.get('lastname', '')
                 if request.POST.get('image'):
-                    obj.intro_image = request.FILES.get('image')
+                    # obj.intro_image = request.FILES.get('image')
+                    obj.intro_image = base64.b64encode(request.FILES.get('image').read()).decode('utf-8')
                 if request.POST.get('designation'):
                     obj.intro_designation = request.POST.get('designation', '')
                 if request.POST.get('address'):
@@ -152,8 +154,7 @@ def resume(request):
                 if request.POST.getlist('skill'):
                     obj.skills = request.POST.getlist('skill', '')
                 obj.save()
-            return render(request,'resume.html')
-        
+            # return render(request,'resume.html')
         obj = user_data.objects.filter(username=str(request.user)+str(request.session.get('pass',''))).first()
         if obj:
             obj.achi_title = eval(obj.achi_title)
@@ -178,6 +179,7 @@ def resume(request):
             obj.proj_description = eval(obj.proj_description)
 
             obj.skills = eval(obj.skills)
+            print(user_data.intro_image)
             return render(request,'resume.html',
             {'output': obj,
             'achievements':zip(obj.achi_title, obj.achi_description),
